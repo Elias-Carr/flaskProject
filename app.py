@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -65,3 +65,29 @@ def update(id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# to be added to your existing app.py
+
+#create the route for the api
+@app.route('/api/tasks', methods=['GET'])
+
+#function for the api route, it's responsible for handling the GET requests to the '/api/tasks'.
+def get_tasks():
+        #---pseudo code---
+        #Retrieve all tasks from the database ordered by creation date
+    tasks = Todo.query.order_by(Todo.date_created).all()
+        #Initialize an empty list named task_list
+    task_list = []
+        #For each task in the retrieved tasks
+    for i in tasks:
+        #Format task information into a dictionary with keys 'id', 'content', and 'date_created'
+        #Append the formatted dictionary to the task_list
+        task_list.append({"id": Todo.query.get_or_404(id[i]), 
+                          "content": request.form['content'],
+                          "date_created": Todo.date_created()})
+        #Convert the task_list to JSON format using jsonify
+        #Return the JSON response containing the task_list 
+    return jsonify(task_list)
+
+            
+        
